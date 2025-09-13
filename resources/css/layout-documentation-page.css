@@ -138,11 +138,13 @@
   .documentation-page__menu__link {
     border: 2px solid transparent;
     padding: var(--spacing-half) var(--spacing-base);
-    text-decoration-line: none;
+    text-decoration: none;
   }
 
   .documentation-page__menu__link.documentation-page__menu__link--active {
-    text-decoration-line: underline;
+    background-color: var(--color-highlight);
+    border-color: var(--color-border);
+    border-radius: 20px 30%;
   }
 
   .documentation-page__menu__section {
@@ -191,10 +193,6 @@
   padding: 0 var(--spacing-base);
   position: sticky;
   z-index: var(--z-index-related-pages);
-
-  &:empty {
-    visibility: hidden;
-  }
 }
 
 .documentation-page__related-pages__link {

@@ -21,19 +21,30 @@ fn render_menu(context, node, level, nested) {
             {nested}
           </div>
         },
-        _ => component {
-          <a
-            class={clsx(#{
-              "documentation-page__menu__link": true,
-              "documentation-page__menu__link--active": context.is_current_page(node.reference.basename),
-            })}
-            href={context.link_to(node.reference.basename)}
-          >
-            {node.reference.front_matter.title}
-          </a>
-          <div class="documentation-page__menu__section__content">
-            {nested}
-          </div>
+        _ => if node.reference.front_matter.render {
+          component {
+            <a
+              class={clsx(#{
+                "documentation-page__menu__link": true,
+                "documentation-page__menu__link--active": context.is_current_page(node.reference.basename),
+              })}
+              href={context.link_to(node.reference.basename)}
+            >
+              {node.reference.front_matter.title}
+            </a>
+            <div class="documentation-page__menu__section__content">
+              {nested}
+            </div>
+          }
+        } else {
+          component {
+            <div class="documentation-page__menu__section__title">
+              {node.reference.front_matter.title}
+            </div>
+            <div class="documentation-page__menu__section__content">
+              {nested}
+            </div>
+          }
         }
       }}
     </div>
@@ -42,6 +53,7 @@ fn render_menu(context, node, level, nested) {
 
 fn template(context, props, content) {
   context.assets.add("resources/css/layout-documentation-page.css");
+  // context.speculation.next(context.collection("documentation_pages").hierarchy.next_after(context.basename));
 
   let menu_hierarchy = context.primary_collection.hierarchy;
 
@@ -53,9 +65,10 @@ fn template(context, props, content) {
           <label
             class="documentation-page__menu__title"
             for="documentation-page-menu-toggle"
-          >
-            Menu
-          </label>
+          >{switch context.primary_collection.name {
+            // _ => error(`Collection not handled: "${context.primary_collection.name}"`),
+            _ => "Menu",
+          }}</label>
           <div class="documentation-page__menu__content">
             {render_hierarchy(
               menu_hierarchy,
@@ -89,33 +102,36 @@ fn template(context, props, content) {
             </h1>
             {content}
           </div>
-          <div class="documentation-page__related-pages">{
-            let prev = menu_hierarchy.before(context.reference.basename);
+          <div class="documentation-page__related-pages">
+            {
+              let prev = menu_hierarchy.before(context.reference.basename);
 
-            if has(prev) {
-              component {
-                <a
-                  class="documentation-page__related-pages__link documentation-page__related-pages__link--prev"
-                  href={prev.canonical_link}
-                >
-                  <span class="documentation-page__related-pages__link__text">{prev.front_matter.title}</span>
-                </a>
+              if has(prev) {
+                component {
+                  <a
+                    class="documentation-page__related-pages__link documentation-page__related-pages__link--prev"
+                    href={prev.canonical_link}
+                  >
+                    <span class="documentation-page__related-pages__link__text">{prev.front_matter.title}</span>
+                  </a>
+                }
               }
             }
-          }{
-            let next = menu_hierarchy.after(context.reference.basename);
+            {
+              let next = menu_hierarchy.after(context.reference.basename);
 
-            if has(next) {
-              component {
-                <a
-                  class="documentation-page__related-pages__link documentation-page__related-pages__link--next"
-                  href={next.canonical_link}
-                >
-                  <span class="documentation-page__related-pages__link__text">{next.front_matter.title}</span>
-                </a>
+              if has(next) {
+                component {
+                  <a
+                    class="documentation-page__related-pages__link documentation-page__related-pages__link--next"
+                    href={next.canonical_link}
+                  >
+                    <span class="documentation-page__related-pages__link__text">{next.front_matter.title}</span>
+                  </a>
+                }
               }
             }
-          }</div>
+          </div>
         </div>
       </div>
     </LayoutMinimal>

@@ -2,7 +2,7 @@ fn template(context, props, content) {
   context.assets.add("resources/css/layout-minimal.css");
 
   if context.is_watching {
-    context.assets.add("resources/ts/global-live-reload.mjs");
+    context.assets.add("resources/ts/global-live-reload.ts");
   }
 
   component {
@@ -10,17 +10,21 @@ fn template(context, props, content) {
     <html lang="en">
       <head>
         <link rel="canonical" href={context.reference.canonical_link}>
+        <link rel="icon" href={context.assets.file("resources/media/favicon.svg")}>
 
         <meta charset="UTF-8">
+        <meta name="turbo-refresh-method" content="morph">
+        <meta name="turbo-refresh-scroll" content="preserve">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content={if context.front_matter.description.is_empty() {
-          "Open-source static site generator. Build websites, expose them as MCP servers, optimize for LLM SEO, and analyze content with NLP."
-        } else {
-          context.front_matter.description
-        }}>
+
+        {if !context.front_matter.description.is_empty() {
+          component {
+            <meta name="description" content={context.front_matter.description}>
+          }
+        }}
 
         <title>{
-          let base_title = "Poet";
+          let base_title = "Grouper";
 
           if context.front_matter.title.is_empty() {
             base_title
@@ -35,10 +39,7 @@ fn template(context, props, content) {
           <nav class="page-navigation">
             <div class="page-navigation__track">
               <a class="page-navigation__link page-navigation__link--site-name" href={context.link_to("index")}>
-                Your Page Name
-              </a>
-              <a class="page-navigation__link" href={context.link_to("#example-page")}>
-                See examples
+                Grouper
               </a>
             </div>
             <a
@@ -54,14 +55,32 @@ fn template(context, props, content) {
           </main>
           <footer class="page-footer">
             <p>
-              Powered by <a href="https://github.com/intentee/poet" target="_blank">Poet</a>
+              Made with ❤️ by <a href="https://intentee.com" target="_blank">Intentee</a> and contributors.
             </p>
             <div class="page-footer__links">
               <a
-                href="https://github.com/intentee/poet"
+                href="https://bsky.app/profile/intentee.bsky.social"
                 target="_blank"
               >
-                <img alt="GitHub" src={context.assets.file("resources/media/logo-github.svg")}>
+                <img alt="Bluesky" src={context.assets.file("resources/media/logo-bluesky.svg")}>
+              </a>
+              <a
+                href="https://discord.gg/92x3Z8a4gj"
+                target="_blank"
+              >
+                <img alt="Discord" src={context.assets.file("resources/media/logo-discord.svg")}>
+              </a>
+              <a
+                href="https://www.linkedin.com/company/intentee"
+                target="_blank"
+              >
+                <img alt="LinkedIn" src={context.assets.file("resources/media/logo-linkedin.svg")}>
+              </a>
+              <a
+                href="https://x.com/intentee"
+                target="_blank"
+              >
+                <img alt="X" src={context.assets.file("resources/media/logo-x.svg")}>
               </a>
             </div>
           </footer>
