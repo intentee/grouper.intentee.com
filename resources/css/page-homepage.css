@@ -11,7 +11,7 @@
   }
   @media (min-width: 900px) {
     background-image:
-      linear-gradient(90deg, transparent 40%, var(--color-highlight)),
+      linear-gradient(60deg, transparent 40%, var(--color-highlight)),
       var(--background-image-grid);
     background-size:
       auto,
@@ -160,6 +160,7 @@
   @media (min-width: 900px) {
     font-size: 140px;
     grid-area: headline;
+    max-width: 1000px;
     padding: var(--spacing-2x);
   }
   @media (min-width: 1440px) {
