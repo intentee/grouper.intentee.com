@@ -42,6 +42,9 @@
   display: flex;
   grid-area: main;
   justify-content: center;
+  justify-self: center;
+  max-width: var(--max-width-page-content);
+  width: 100%;
 }
 
 .page-navigation {
